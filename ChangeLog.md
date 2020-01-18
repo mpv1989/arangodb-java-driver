@@ -6,6 +6,102 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [6.5.0] - 2019-12-23
+
+- createDatabase with options (replicationFactor, minReplicationFactor, sharding) (ArangoDB v3.6)
+- extended DatabaseEntity with replicationFactor, minReplicationFactor, sharding (ArangoDB v3.6)
+- timeout option for AQL queries (ArangoDB v3.6)
+- enhancedNgramAnalyzer and enhancedTextAnalyzer (ArangoDB v3.6)
+- velocypack v2.1.0
+
+## [6.4.1] - 2019-10-23
+
+- jackson v2.9.10
+
+## [6.4.0] - 2019-10-09
+
+### Added
+
+- Stream Transactions support for graph APIs
+
+### Fixed
+
+- `catchExceptions` option in async `getEdge` and `getVertex`
+
+## [6.3.0] - 2019-09-16
+
+### Added
+
+- support for keyType uuid & padded
+
+### Fixed
+
+- bugfix AqlExecutionExplainEntity indexes
+- bugfix reconnection after more than 3 failures
+
+## [6.2.0] - 2019-09-05
+
+- merged async driver
+- bugfix method chaining in IndexOptions
+
+## [6.1.0] - 2019-08-29
+
+### Added
+
+- updated maven dependencies
+
+### Fixed
+
+- custom serde not always used
+- `documentExists()` and `getDocument` behaviour on non existing `transactionId`
+
+## [6.0.0] - 2019-08-20
+
+### Added
+
+- split `GraphDocumentReadOptions` from `DocumentReadOptions` (breaking change)
+- added `ArangoCollection#getResponsibleShard(Object)`
+- added support for Analyzers
+- added support for Stream Transactions
+- added support for named indices
+- added support for TTL indices
+- added minReplicationAttribute for collections and graphs
+
+## [5.0.7] - 2019-07-19
+
+### Fixed
+
+- properly all load all configuration defaults
+
+### Added
+
+- added acquireHostListInterval configuration parameter
+
+## [5.0.6] - 2019-05-24
+
+### Added
+
+- requests are now storing header information
+- faster test code execution
+
+## [5.0.5] - 2019-05-24
+
+### Fixed
+
+- host handling (issue #241)
+- logging extended hostresolver
+
+### Added
+
+- add arangodb.httpCookieSpec
+- added smartJoinAttribute and shardingStrategy collection attributes
+
+## [5.0.4] - 2019-18-01
+
+### Fixed
+
+- fixed bug with multi document operations when using parameter `silent` (issue #241)
+
 ## [5.0.3] - 2018-11-12
 
 ### Fixed
@@ -39,7 +135,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ### Added
 
-- added dirty read support ([reading from followers](https://docs.arangodb.com/current/Manual/Administration/ActiveFailover/#reading-from-follower))
+- added dirty read support ([reading from followers](https://www.arangodb.com/docs/stable/administration-active-failover.html#reading-from-follower))
 
   - added option `AqlQueryOptions#allowDirtyRead` for `ArangoDatabase#query`.
   - added option `DocumentReadOptions#allowDirtyRead` for `ArangoCollection#getDocument`
@@ -927,7 +1023,11 @@ Added support for sparse indexes
 
 - Initial Release
 
-[unreleased]: https://github.com/arangodb/arangodb-java-driver/compare/5.0.3...HEAD
+[unreleased]: https://github.com/arangodb/arangodb-java-driver/compare/5.0.7...HEAD
+[5.0.7]: https://github.com/arangodb/arangodb-java-driver/compare/5.0.6...5.0.7
+[5.0.6]: https://github.com/arangodb/arangodb-java-driver/compare/5.0.5...5.0.6
+[5.0.5]: https://github.com/arangodb/arangodb-java-driver/compare/5.0.4...5.0.5
+[5.0.4]: https://github.com/arangodb/arangodb-java-driver/compare/5.0.3...5.0.4
 [5.0.3]: https://github.com/arangodb/arangodb-java-driver/compare/5.0.2...5.0.3
 [5.0.2]: https://github.com/arangodb/arangodb-java-driver/compare/5.0.1...5.0.2
 [5.0.1]: https://github.com/arangodb/arangodb-java-driver/compare/5.0.0...5.0.1

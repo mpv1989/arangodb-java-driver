@@ -20,74 +20,70 @@
 
 package com.arangodb.internal.net;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * @author Mark Vollmary
- *
  */
 public class RandomHostHandler implements HostHandler {
 
-	private final HostResolver resolver;
-	private final HostHandler fallback;
-	private Host origin;
-	private Host current;
+    private final HostResolver resolver;
+    private final HostHandler fallback;
+    private Host origin;
+    private Host current;
 
-	public RandomHostHandler(final HostResolver resolver, final HostHandler fallback) {
-		super();
-		this.resolver = resolver;
-		this.fallback = fallback;
-		origin = current = getRandomHost(true, false);
-	}
+    public RandomHostHandler(final HostResolver resolver, final HostHandler fallback) {
+        super();
+        this.resolver = resolver;
+        this.fallback = fallback;
+        origin = current = getRandomHost(true, false);
+    }
 
-	@Override
-	public Host get(final HostHandle hostHandle, AccessType accessType) {
-		if (current == null) {
-			origin = current = getRandomHost(false, true);
-		}
-		return current;
-	}
+    @Override
+    public Host get(final HostHandle hostHandle, AccessType accessType) {
+        if (current == null) {
+            origin = current = getRandomHost(false, true);
+        }
+        return current;
+    }
 
-	@Override
-	public void success() {
-		current = origin;
-	}
+    @Override
+    public void success() {
+        current = origin;
+    }
 
-	@Override
-	public void fail() {
-		fallback.fail();
-		current = fallback.get(null, null);
-	}
+    @Override
+    public void fail() {
+        fallback.fail();
+        current = fallback.get(null, null);
+    }
 
-	private Host getRandomHost(final boolean initial, final boolean closeConnections) {
-		final ArrayList<Host> hosts = new ArrayList<Host>(resolver.resolve(initial, closeConnections));
-		Collections.shuffle(hosts);
-		return hosts.get(0);
-	}
+    private Host getRandomHost(final boolean initial, final boolean closeConnections) {
 
-	@Override
-	public void reset() {
-		fallback.reset();
-	}
+        final ArrayList<Host> hosts = new ArrayList<>(resolver.resolve(initial, closeConnections).getHostsList());
+        Collections.shuffle(hosts);
+        return hosts.get(0);
+    }
 
-	@Override
-	public void confirm() {
-	}
+    @Override
+    public void reset() {
+        fallback.reset();
+    }
 
-	@Override
-	public void close() throws IOException {
-		final List<Host> hosts = resolver.resolve(false, false);
-		for (final Host host : hosts) {
-			host.close();
-		}
-	}
+    @Override
+    public void confirm() {
+    }
 
-	@Override
-	public void closeCurrentOnError() {
-		current.closeOnError();
-	}
+    @Override
+    public void close() {
+        final HostSet hosts = resolver.resolve(false, false);
+        hosts.close();
+    }
+
+    @Override
+    public void closeCurrentOnError() {
+        current.closeOnError();
+    }
 
 }
